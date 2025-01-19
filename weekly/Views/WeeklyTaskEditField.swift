@@ -58,21 +58,21 @@ struct WeeklyTaskEditField: View {
                     onIncreaseIndent()
                     return .handled
                 case .return:
-                    onReturn()
+                    onReturnKey()
                     return .handled
                 default:
                     return .ignored
                 }
             })
             .onSubmit(of: .text, {
-                onReturn()
+                onReturnKey()
             })
             .submitScope()
             .scrollContentBackground(.hidden)
             .multilineTextAlignment(.leading)
     }
 
-    func onReturn() {
+    func onReturnKey() {
         let newTask = WeeklyTask(
             icon: IconOptions.todo.rawValue,
             label: ""
