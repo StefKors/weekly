@@ -7,12 +7,14 @@
 
 import SwiftUI
 import SwiftData
+import Combine
 
 @main
 struct weeklyApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            WeeklyEntry.self,
+            WeeklyTask.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -26,7 +28,8 @@ struct weeklyApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .fontDesign(.rounded)
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(.shared)
     }
 }

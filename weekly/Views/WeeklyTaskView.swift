@@ -1,0 +1,73 @@
+//
+//  WeeklyTaskView.swift
+//  weekly
+//
+//  Created by Stef Kors on 17/01/2025.
+//
+
+
+import SwiftUI
+import SwiftData
+
+struct GrabberView: View {
+    var body: some View {
+        HStack(spacing: 6) {
+            RoundedRectangle(cornerRadius: 4)
+                .frame(width: 2)
+
+            RoundedRectangle(cornerRadius: 4)
+                .frame(width: 2)
+        }
+        .padding(.vertical, 2)
+        .padding(.leading, 4)
+        .foregroundStyle(.tertiary)
+        .frame(height: 20)
+        .contentShape(Rectangle())
+    }
+}
+
+#Preview {
+    GrabberView()
+        .scenePadding()
+}
+
+struct WeeklyTaskView: View {
+    let task: WeeklyTask
+
+    @State private var isHovering: Bool = false
+    @Environment(\.isReordering) var isReordering
+
+    var isActive: Bool {
+        isReordering  //&& isHovering
+    }
+
+    var body: some View {
+        HStack {
+            GrabberView()
+                .opacity(isActive ? 1 : isHovering ? 0.4 : 0)
+                .contentShape(shape)
+                .onHover { hoverState in
+                    isHovering = hoverState
+                }
+            WeeklyTaskEditIcon(task: task)
+                .zIndex(2)
+            WeeklyTaskEditField(task: task)
+                .zIndex(1)
+        }
+        .contentShape(shape)
+        .background {
+            shape.fill(.background)
+                .shadow(.cardLarge)
+                .opacity(isActive ? 1 : 0)
+        }
+    }
+
+
+    var shape: some InsettableShape {
+        RoundedRectangle(cornerRadius: 4)
+    }
+}
+
+#Preview {
+    WeeklyTaskView(task: .preview)
+}
