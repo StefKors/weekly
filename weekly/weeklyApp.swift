@@ -31,5 +31,10 @@ struct weeklyApp: App {
                 .fontDesign(.rounded)
         }
         .modelContainer(.shared)
+        .commands {
+            TextEditingCommands()
+            TextFormattingCommands()
+            ToolbarCommands()
+        }
     }
 }

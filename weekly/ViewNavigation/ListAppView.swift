@@ -9,8 +9,56 @@
 import SwiftUI
 import SwiftData
 
-struct ListAppView: View {
+struct EntryContextMenu: View {
+    let entry: WeeklyEntry
+
     @Environment(\.modelContext) private var modelContext
+
+    var body: some View {
+        Button {
+            entry.copyToPasteboard()
+        } label: {
+            Label("Copy to Slack", systemImage: "document.on.document")
+        }
+
+        Menu("Entry Type") {
+            ForEach(EntryType.allCases) { type in
+                Button {
+                    entry.type = type
+                } label: {
+                    HStack {
+                        Text(type.rawValue.capitalized)
+                        if entry.type == type {
+                            Image(systemName: "checkmark")
+                        }
+                    }
+                }
+            }
+        }
+
+        Divider()
+
+        Button {
+            deleteItem(entry)
+        } label: {
+            Label("Delete", systemImage: "trash")
+        }
+    }
+
+
+    private func deleteItem(_ entry: WeeklyEntry) {
+        withAnimation {
+            modelContext.delete(entry)
+        }
+    }
+}
+
+#Preview {
+    EntryContextMenu(entry: .preview)
+        .previewSetup()
+}
+
+struct ListAppView: View {
     @Query(sort: \WeeklyEntry.timestamp, order: .forward) private var entries: [WeeklyEntry]
 
     var body: some View {
@@ -26,19 +74,7 @@ struct ListAppView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .scenePadding(.vertical)
                         .contextMenu {
-                            Button {
-                                entry.copyToPasteboard()
-                            } label: {
-                                Label("Copy to Slack", systemImage: "document.on.document")
-                            }
-
-                            Divider()
-
-                            Button {
-                                deleteItem(entry)
-                            } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
+                            EntryContextMenu(entry: entry)
                         }
                     }
                 }
@@ -48,50 +84,7 @@ struct ListAppView: View {
         }
         .fadeMask(alignment: .bottom, size: 20, startingAt: 40)
         .overlay(alignment: .bottomLeading) {
-            VStack(alignment: .leading) {
-                ScrollView(.horizontal) {
-                    HStack {
-                        Button {
-                            addItem()
-                        } label: {
-                            Label("EOD Update", systemImage: "plus")
-                        }
-
-                        Button {
-                            addItem()
-                        } label: {
-                            Label("Weekly Update", systemImage: "plus")
-                        }
-                        .disabled(true)
-
-                        Button {
-                            addItem()
-                        } label: {
-                            Label("iOS Release Notes", systemImage: "plus")
-                        }
-                        .disabled(true)
-                    }
-                    .scrollBounceBehavior(.basedOnSize)
-                    .padding(.leading, 24)
-                    .padding(.bottom)
-                    .scrollIndicators(.hidden)
-                }
-            }
-            .buttonStyle(.menubar)
-            .opacity(0.6)
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = WeeklyEntry(tasks: [.preview])
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItem(_ entry: WeeklyEntry) {
-        withAnimation {
-            modelContext.delete(entry)
+            CreateActionsView()
         }
     }
 }

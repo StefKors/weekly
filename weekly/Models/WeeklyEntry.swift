@@ -13,14 +13,25 @@ extension EnvironmentValues {
     @Entry var entry: WeeklyEntry = .preview
 }
 
+enum EntryType: String, Hashable, Identifiable, Codable, CaseIterable {
+    case daily
+    case weekly
+
+    var id: String {
+        self.rawValue
+    }
+}
+
 @Model
 final class WeeklyEntry {
     var timestamp: Date
     var tasks: [WeeklyTask] = []
+    var type: EntryType? = EntryType.daily
 
-    init(timestamp: Date = Date(), tasks: [WeeklyTask] = []) {
+    init(timestamp: Date = Date(), type: EntryType, tasks: [WeeklyTask] = []) {
         self.timestamp = timestamp
         self.tasks = tasks
+        self.type = type
     }
 
     func copyToPasteboard() {
@@ -34,6 +45,13 @@ final class WeeklyEntry {
 extension WeeklyEntry {
     static let preview = WeeklyEntry(
         timestamp: Date.now,
+        type: .daily,
+        tasks: [.preview]
+    )
+
+    static let previewWeekly = WeeklyEntry(
+        timestamp: Date.now,
+        type: .weekly,
         tasks: [.preview]
     )
 }

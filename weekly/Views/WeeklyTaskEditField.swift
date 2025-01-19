@@ -20,13 +20,14 @@ struct WeeklyTaskEditField: View {
 
     var body: some View {
         TextField("Weekly Task", text: $task.label)
+            .writingToolsBehavior(.complete)
             .textFieldStyle(.plain)
             .focused($focusedField, equals: .field)
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now()) {
-                    self.focusedField = .field
-                }
-            }
+//            .onAppear {
+//                DispatchQueue.main.asyncAfter(deadline: .now()) {
+//                    self.focusedField = .field
+//                }
+//            }
             .onKeyPress(action: { keyPress in
                 if keyPress.characters == "]" && keyPress.modifiers.contains(.command) {
                     onIncreaseIndent()

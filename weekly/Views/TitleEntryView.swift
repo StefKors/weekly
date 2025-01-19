@@ -18,6 +18,13 @@ struct TitleEntryView: View {
         .font(.title)
         .fontWeight(.bold)
         .padding(.leading, 24)
+        .overlay(alignment: .leading) {
+            if entry.type == .weekly {
+                Circle().fill(.red)
+                    .frame(width: 8, height: 8)
+                    .offset(x: -4)
+            }
+        }
     }
 }
 

@@ -18,90 +18,62 @@ extension FetchDescriptor {
         return fetchDescriptor
     }
 }
+
+struct SingleEntryView: View {
+    let entry: WeeklyEntry
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .center) {
+
+                    VStack(alignment: .leading) {
+                        TitleEntryView(entry: entry)
+                        NestedTasksView(entry: entry)
+                            .environment(\.entry, entry)
+                    }
+                    .frame(maxWidth: 400, alignment: .leading)
+                    .scenePadding(.vertical)
+                    .contextMenu {
+                        EntryContextMenu(entry: entry)
+                    }
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
+            .scrollBounceBehavior(.basedOnSize)
+        }
+        .contentMargins(.bottom, 40, for: .scrollContent)
+    }
+}
+
+#Preview {
+    SingleEntryView(entry: .preview)
+        .previewSetup()
+}
+
 struct TodayAppView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query(.today) private var entries: [WeeklyEntry]
+//    @Query(.today) private var entries: [WeeklyEntry]
+    @Query(sort: \WeeklyEntry.timestamp, order: .forward) private var entries: [WeeklyEntry]
+
+    @State private var selectedEntry: WeeklyEntry? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            ScrollView {
-                VStack(alignment: .center) {
-                    ForEach(entries) { entry in
-                        VStack(alignment: .leading) {
-                            TitleEntryView(entry: entry)
-                            NestedTasksView(entry: entry)
-                                .environment(\.entry, entry)
-                        }
-                        .frame(maxWidth: 400, alignment: .leading)
-                        .scenePadding(.vertical)
-                        .contextMenu {
-                            Button {
-                                entry.copyToPasteboard()
-                            } label: {
-                                Label("Copy to Slack", systemImage: "document.on.document")
-                            }
+            if let entry = selectedEntry ?? entries.last {
+                SingleEntryView(entry: entry)
+                    .id(entry.id)
+                    .transition(.opacity.combined(with: .slide))
+            }
 
-                            Divider()
-
-                            Button {
-                                deleteItem(entry)
-                            } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
-                        }
+            EntryTimelineView(selectedEntry: $selectedEntry)
+                .padding(.bottom, 50)
+                .task {
+                    if selectedEntry == nil {
+                        selectedEntry = entries.last
                     }
                 }
-                .frame(maxWidth: .infinity, alignment: .center)
-                .scrollBounceBehavior(.basedOnSize)
-            }
-            .contentMargins(.bottom, 40, for: .scrollContent)
         }
         .fadeMask(alignment: .bottom, size: 20, startingAt: 40)
         .overlay(alignment: .bottomLeading) {
-            VStack(alignment: .leading) {
-                ScrollView(.horizontal) {
-                    HStack {
-                        Button {
-                            addItem()
-                        } label: {
-                            Label("EOD Update", systemImage: "plus")
-                        }
-
-                        Button {
-                            addItem()
-                        } label: {
-                            Label("Weekly Update", systemImage: "plus")
-                        }
-                        .disabled(true)
-
-                        Button {
-                            addItem()
-                        } label: {
-                            Label("iOS Release Notes", systemImage: "plus")
-                        }
-                        .disabled(true)
-                    }
-                    .scrollBounceBehavior(.basedOnSize)
-                    .padding(.leading, 24)
-                    .padding(.bottom)
-                    .scrollIndicators(.hidden)
-                }
-            }
-            .buttonStyle(.menubar)
-            .opacity(0.6)
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = WeeklyEntry(tasks: [.preview])
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItem(_ entry: WeeklyEntry) {
-        withAnimation {
-            modelContext.delete(entry)
+            CreateActionsView()
         }
     }
 }
