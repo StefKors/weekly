@@ -8,6 +8,22 @@
 import SwiftUI
 import SwiftData
 import Combine
+import Observation
+
+extension EnvironmentValues {
+    @Entry var entry: WeeklyEntry = .preview
+    @Entry var isReordering: Bool = false
+    @Entry var focus: AppFocus = AppFocus()
+}
+
+enum ViewFocusable: Hashable {
+    case entry(Int)
+    case task(UUID)
+}
+
+@Observable class AppFocus {
+    var focusedView: ViewFocusable?
+}
 
 @main
 struct weeklyApp: App {
@@ -25,10 +41,13 @@ struct weeklyApp: App {
         }
     }()
 
+    @State private var focus: AppFocus = AppFocus()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .fontDesign(.rounded)
+                .environment(\.focus, focus)
         }
         .modelContainer(.shared)
         .commands {

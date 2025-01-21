@@ -9,10 +9,6 @@ import SwiftUI
 
 public typealias Reorderable = Identifiable & Equatable
 
-extension EnvironmentValues {
-    @Entry var isReordering: Bool = false
-}
-
 public struct ReorderableForEach<Item: Reorderable, Content: View, Preview: View>: View {
 
     public init(

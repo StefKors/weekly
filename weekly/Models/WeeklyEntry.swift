@@ -9,10 +9,6 @@ import Foundation
 import SwiftData
 import SwiftUI
 
-extension EnvironmentValues {
-    @Entry var entry: WeeklyEntry = .preview
-}
-
 enum EntryType: String, Hashable, Identifiable, Codable, CaseIterable {
     case daily
     case weekly

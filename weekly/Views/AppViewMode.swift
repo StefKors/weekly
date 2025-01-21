@@ -29,7 +29,6 @@ struct ToolbarViewModeToggle: View {
             }
         }
         .pickerStyle(.segmented)
-//        .frame(maxWidth: 10)
     }
 }
 

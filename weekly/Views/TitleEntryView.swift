@@ -13,7 +13,7 @@ struct TitleEntryView: View {
 
     var body: some View {
         HStack {
-            Text(entry.timestamp, style: .date)
+            Text(entry.timestamp.formatted(date: .complete, time: .omitted))
         }
         .font(.title)
         .fontWeight(.bold)

@@ -13,6 +13,8 @@ struct WeeklyTaskEditField: View {
     var onCommit: () -> Void = { }
 
     @Environment(\.entry) private var entry
+    @Environment(\.focus) private var focus
+
     enum FocusField: Hashable {
         case field
     }
@@ -23,11 +25,13 @@ struct WeeklyTaskEditField: View {
             .writingToolsBehavior(.complete)
             .textFieldStyle(.plain)
             .focused($focusedField, equals: .field)
-//            .onAppear {
-//                DispatchQueue.main.asyncAfter(deadline: .now()) {
-//                    self.focusedField = .field
-//                }
-//            }
+            .task(id: focus.focusedView) {
+                if case .task(let id) = focus.focusedView {
+                    if id == task.id {
+                        focusedField = .field
+                    }
+                }
+            }
             .onKeyPress(action: { keyPress in
                 if keyPress.characters == "]" && keyPress.modifiers.contains(.command) {
                     onIncreaseIndent()
@@ -77,19 +81,22 @@ struct WeeklyTaskEditField: View {
             icon: IconOptions.todo.rawValue,
             label: ""
         )
-        guard let currentIndex = entry.tasks.firstIndex(of: task) else {
-            withAnimation(.snappy(duration: 0.2)) {
-                entry.tasks.append(newTask)
-            }
-            return
-        }
         withAnimation(.snappy(duration: 0.2)) {
             // insert at index
-            entry.tasks.insert(newTask, at: currentIndex + 1)
+            if let currentIndex = entry.tasks.firstIndex(of: task) {
+                entry.tasks.insert(newTask, at: currentIndex + 1)
+            } else {
+                entry.tasks.append(newTask)
+            }
+            focus.focusedView = .task(newTask.id)
         }
     }
 
     func onDelete() {
+        let taskBefore = entry.tasks.element(before: task)
+        if let taskBefore {
+            focus.focusedView = .task(taskBefore.id)
+        }
         withAnimation(.snappy(duration: 0.2)) {
             entry.tasks.removeAll(where: { item in
                 return item === task

@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum IconOptions: String, CaseIterable {
+enum IconOptions: String, Hashable, CaseIterable {
     case aligned = "aligned"
     case canceled = "canceled"
     case check = "check"
