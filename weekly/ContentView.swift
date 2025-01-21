@@ -53,7 +53,8 @@ struct ContentView: View {
                     modelContext.insert(dailyEntry)
 
                     // Create an extra weekly entry if the day is Wednesday
-                    if calendar.component(.weekday, from: date) == 4 { // 4 represents Wednesday
+                    // 4 represents Wednesday
+                    if calendar.component(.weekday, from: date) == 4 {
                         let weeklyEntry = WeeklyEntry(
                             timestamp: date,
                             type: .weekly,
