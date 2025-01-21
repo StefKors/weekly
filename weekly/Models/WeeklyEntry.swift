@@ -28,6 +28,10 @@ final class WeeklyEntry {
         self.timestamp = timestamp
         self.tasks = tasks
         self.type = type
+
+        if tasks.count > 1 {
+            self.refreshTaskIndexes()
+        }
     }
 
     func copyToPasteboard() {
@@ -35,6 +39,12 @@ final class WeeklyEntry {
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
         pasteboard.setString(entryAsString, forType: .string)
+    }
+
+    func refreshTaskIndexes() {
+        for (index, task) in tasks.enumerated() {
+            task.index = index
+        }
     }
 }
 

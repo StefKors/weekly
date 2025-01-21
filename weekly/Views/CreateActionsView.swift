@@ -87,8 +87,15 @@ struct CreateActionsView: View {
         var tasksInOrder: [WeeklyTask] = []
         for option in IconOptions.allCases {
             let tasks = groupedTasks[option] ?? []
-            for task in tasks {
-                tasksInOrder.append(WeeklyTask(icon: task.icon, label: task.label, indent: task.indent))
+            for (index, task) in tasks.enumerated() {
+                tasksInOrder.append(
+                    WeeklyTask(
+                        icon: task.icon,
+                        label: task.label,
+                        indent: task.indent,
+                        index: index
+                    )
+                )
             }
         }
 

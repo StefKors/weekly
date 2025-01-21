@@ -8,36 +8,6 @@
 import SwiftUI
 import SwiftData
 
-extension Collection where Element: Equatable {
-
-    func element(after element: Element, wrapping: Bool = false) -> Element? {
-        if let index = self.firstIndex(of: element){
-            let followingIndex = self.index(after: index)
-            if followingIndex < self.endIndex {
-                return self[followingIndex]
-            } else if wrapping {
-                return self[self.startIndex]
-            }
-        }
-        return nil
-    }
-}
-
-extension BidirectionalCollection where Element: Equatable {
-
-    func element(before element: Element, wrapping: Bool = false) -> Element? {
-        if let index = self.firstIndex(of: element){
-            let precedingIndex = self.index(before: index)
-            if precedingIndex >= self.startIndex {
-                return self[precedingIndex]
-            } else if wrapping {
-                return self[self.index(before: self.endIndex)]
-            }
-        }
-        return nil
-    }
-}
-
 struct NestedTasksView: View {
     @Bindable var entry: WeeklyEntry
 
@@ -47,7 +17,7 @@ struct NestedTasksView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            ReorderableForEach(entry.tasks, active: $active) { item in
+            ReorderableForEach(entry.tasks.sorted(using: KeyPathComparator(\.index)), active: $active) { item in
                 WeeklyTaskView(task: item)
                     .padding(.leading, item.indent * 12)
                     .onKeyPress(action: { keyPress in
@@ -73,9 +43,9 @@ struct NestedTasksView: View {
                     .opacity(0)
                     .contentShape(.dragPreview, shape)
             } moveAction: { from, to in
-                // TODO Fix moving
                 print("move from \(from) to \(to)")
                 entry.tasks.move(fromOffsets: from, toOffset: to)
+                entry.refreshTaskIndexes()
             }
         }
         .reorderableForEachContainer(active: $active)
@@ -83,7 +53,8 @@ struct NestedTasksView: View {
             if entry.tasks.isEmpty {
                 let newTask = WeeklyTask(
                     icon: IconOptions.todo.rawValue,
-                    label: ""
+                    label: "",
+                    index: 0
                 )
                 entry.tasks.append(newTask)
             }

@@ -73,8 +73,7 @@ struct TimelineEntryView: View {
                 }
             }
         }
-        .frame(width: 2, height: CGFloat(entry.tasks.count) * 10)
-        .frame(height: 140, alignment: .bottom)
+        .frame(width: 2, height: min(100, CGFloat(entry.tasks.count) * 10), alignment: .bottom)
         .padding(.horizontal, 6)
         .contentShape(Rectangle())
         .overlay(alignment: .top) {

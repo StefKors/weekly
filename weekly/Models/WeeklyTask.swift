@@ -15,11 +15,13 @@ final class WeeklyTask: Identifiable, CustomStringConvertible {
     var icon: String
     var label: String
     var indent: CGFloat = 0
+    var index: Int = 0
 
-    init(icon: String, label: String, indent: CGFloat = 0) {
+    init(icon: String, label: String, indent: CGFloat = 0, index: Int) {
         self.icon = icon
         self.label = label
         self.indent = indent
+        self.index = index
     }
 
     var description: String {
@@ -30,6 +32,7 @@ final class WeeklyTask: Identifiable, CustomStringConvertible {
 extension WeeklyTask {
     static let preview = WeeklyTask(
         icon: "progress",
-        label: "Prototype weekly editor on macOS"
+        label: "Prototype weekly editor on macOS",
+        index: 0
     )
 }

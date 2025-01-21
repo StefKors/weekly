@@ -79,12 +79,15 @@ struct WeeklyTaskEditField: View {
     func onReturnKey() {
         let newTask = WeeklyTask(
             icon: IconOptions.todo.rawValue,
-            label: ""
+            label: "",
+            index: entry.tasks.count
         )
         withAnimation(.snappy(duration: 0.2)) {
             // insert at index
             if let currentIndex = entry.tasks.firstIndex(of: task) {
+                newTask.index = currentIndex + 1
                 entry.tasks.insert(newTask, at: currentIndex + 1)
+                entry.refreshTaskIndexes()
             } else {
                 entry.tasks.append(newTask)
             }
@@ -101,6 +104,7 @@ struct WeeklyTaskEditField: View {
             entry.tasks.removeAll(where: { item in
                 return item === task
             })
+            entry.refreshTaskIndexes()
         }
     }
 
