@@ -21,7 +21,7 @@ struct WeeklyTaskEditField: View {
     @FocusState private var focusedField: FocusField?
 
     var body: some View {
-        TextField("Weekly Task", text: $task.label)
+        TextField("Weekly Task", text: $task.label, axis: .vertical)
             .writingToolsBehavior(.complete)
             .textFieldStyle(.plain)
             .focused($focusedField, equals: .field)

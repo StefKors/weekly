@@ -21,7 +21,7 @@ struct GrabberView: View {
         .padding(.vertical, 2)
         .padding(.leading, 4)
         .foregroundStyle(.tertiary)
-        .frame(height: 20)
+        .frame(height: 19)
         .contentShape(Rectangle())
     }
 }
@@ -42,16 +42,19 @@ struct WeeklyTaskView: View {
     }
 
     var body: some View {
-        HStack {
-            GrabberView()
-                .opacity(isActive ? 1 : isHovering ? 0.4 : 0)
-                .contentShape(shape)
-                .onHover { hoverState in
-                    isHovering = hoverState
-                }
-            WeeklyTaskEditIcon(task: task)
-                .zIndex(2)
+        HStack(alignment: .top) {
+            HStack() {
+                GrabberView()
+                    .opacity(isActive ? 1 : isHovering ? 0.4 : 0)
+                    .contentShape(shape)
+                    .onHover { hoverState in
+                        isHovering = hoverState
+                    }
+                WeeklyTaskEditIcon(task: task)
+            }
+            .zIndex(2)
             WeeklyTaskEditField(task: task)
+                .padding(.vertical, 4)
                 .zIndex(1)
         }
         .contentShape(shape)

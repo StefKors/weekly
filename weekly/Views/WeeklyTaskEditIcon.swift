@@ -59,7 +59,7 @@ struct WeeklyTaskEditIcon: View {
     
     @State var isActive: Bool = false
     
-    private let size: CGFloat = 20
+    private let size: CGFloat = 19
     
     private let spacing: CGFloat = 2
     
