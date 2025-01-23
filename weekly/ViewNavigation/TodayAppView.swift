@@ -75,12 +75,29 @@ struct TodayAppView: View {
             if let entry = todaysEntry {
                 SingleEntryView(entry: entry)
                     .id(entry.id)
-                // Use the dynamic transition edge, combining with opacity
                     .transition(.opacity.combined(with: .push(from: transitionEdge)))
                     .task(id: entry.id) {
                         if let task = entry.tasks.last {
                             print("set focus to task \(task.id)")
                             focus.focusedView = .task(task.id)
+                        }
+                    }
+                    .toolbar {
+                        ToolbarItem() {
+                            Button {
+                                entry.copyToPasteboard()
+                            } label: {
+                                Label {
+                                    Text("Copy to Slack")
+                                } icon: {
+                                    Image(.slack)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .grayscale(1)
+                                        .frame(width: 20, height: 20, alignment: .center)
+                                }
+                            }
+
                         }
                     }
             }

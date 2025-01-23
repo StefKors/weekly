@@ -33,11 +33,12 @@ final class WeeklyEntry {
             self.refreshTaskIndexes()
         }
     }
+    
 
     func copyToPasteboard() {
         var pasteboardString = ""
         if type == .daily {
-            pasteboardString += "**EOD Update**\n"
+            pasteboardString += "*EOD Update*\n"
             pasteboardString += tasks.map { $0.description }.joined(separator: "\n")
         }
         if type == .weekly {

@@ -20,7 +20,7 @@ struct NestedTasksView: View {
         VStack(alignment: .leading, spacing: 0) {
             ReorderableForEach(entry.tasks.sorted(using: KeyPathComparator(\.index)), active: $active) { item in
                 WeeklyTaskView(task: item)
-                    .padding(.leading, item.indent * 12)
+                    .padding(.leading, item.indent * 24)
                     .onKeyPress(action: { keyPress in
                         switch keyPress.key {
                         case .downArrow:

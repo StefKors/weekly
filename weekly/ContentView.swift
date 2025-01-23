@@ -12,7 +12,7 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \WeeklyEntry.timestamp, order: .forward) private var entries: [WeeklyEntry]
 
-    @State private var searchText: String = ""
+//    @State private var searchText: String = ""
 
     @SceneStorage("viewMode") private var viewMode: AppViewMode = .today
 
@@ -23,17 +23,17 @@ struct ContentView: View {
                 TodayAppView()
             case .list:
                 ListAppView()
-            case .stack:
-                StackAppView()
             }
         }
         .navigationTitle(Text("#weekly"))
-        .searchable(text: $searchText, prompt: "Search...")
-        .toolbar {
-            ToolbarItem() {
-                ToolbarViewModeToggle(viewMode: $viewMode)
-            }
-        }
+//        .searchable(text: $searchText, prompt: "Search...")
+//        .toolbar {
+//#if DEBUG
+//            ToolbarItem() {
+//                ToolbarViewModeToggle(viewMode: $viewMode)
+//            }
+//#endif
+//        }
     }
 }
 

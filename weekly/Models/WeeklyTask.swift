@@ -32,7 +32,7 @@ final class WeeklyTask: Identifiable, CustomStringConvertible {
     }
 
     var description: String {
-        return "\(String(repeating: " ", count: Int(self.indent))):\(icon): \(label)"
+        return "\(String(repeating: "\t", count: Int(self.indent))):\(icon): \(label)"
     }
 }
 
