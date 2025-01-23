@@ -31,7 +31,7 @@ final class WeeklyTask: Identifiable, CustomStringConvertible {
 
 extension WeeklyTask {
     static let preview = WeeklyTask(
-        icon: "progress",
+        icon: "aligned",
         label: "Prototype weekly editor on macOS",
         index: 0
     )

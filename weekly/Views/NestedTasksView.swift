@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct NestedTasksView: View {
+    @Environment(\.modelContext) private var modelContext
     @Bindable var entry: WeeklyEntry
 
     @State private var active: WeeklyTask?
@@ -46,6 +47,7 @@ struct NestedTasksView: View {
                 print("move from \(from) to \(to)")
                 entry.tasks.move(fromOffsets: from, toOffset: to)
                 entry.refreshTaskIndexes()
+                try? modelContext.save()
             }
         }
         .reorderableForEachContainer(active: $active)
@@ -69,5 +71,5 @@ struct NestedTasksView: View {
 
 #Preview {
     NestedTasksView(entry: .preview)
-        .fontDesign(.rounded)
+        .previewSetup()
 }
