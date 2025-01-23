@@ -58,7 +58,7 @@ struct CreateActionsView: View {
                 }
 
                 let newItem = WeeklyEntry(type: .daily, tasks: unfinishedTasks)
-                modelContext.insert(newItem)
+//                modelContext.insert(newItem)
             }
         }
     }
@@ -67,7 +67,7 @@ struct CreateActionsView: View {
         withAnimation {
             let lastWeeksTasks = tasksFromLastWeek()
             let newItem = WeeklyEntry(type: .weekly, tasks: lastWeeksTasks)
-            modelContext.insert(newItem)
+//            modelContext.insert(newItem)
         }
     }
 

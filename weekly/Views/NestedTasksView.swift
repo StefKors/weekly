@@ -45,9 +45,11 @@ struct NestedTasksView: View {
                     .contentShape(.dragPreview, shape)
             } moveAction: { from, to in
                 print("move from \(from) to \(to)")
-                entry.tasks.move(fromOffsets: from, toOffset: to)
-                entry.refreshTaskIndexes()
-                try? modelContext.save()
+                var updatedTasks = entry.tasks.sorted(using: KeyPathComparator(\.index))
+                updatedTasks.move(fromOffsets: from, toOffset: to)
+                for (index, task) in updatedTasks.enumerated() {
+                    task.index = index
+                }
             }
         }
         .reorderableForEachContainer(active: $active)

@@ -9,13 +9,10 @@
 import SwiftUI
 
 struct DateSwitcherDayTileView: View {
-    /// A list of dates to display.
     let date: Date
-
-    /// The currently selected date.
     @Binding var selectedDate: Date
-
     var space: Namespace.ID
+    var entries: [WeeklyEntry] = []
 
     /// For date comparisons (e.g., same day).
     private let calendar = Calendar.current
@@ -51,9 +48,20 @@ struct DateSwitcherDayTileView: View {
             Text(dayNumber)
                 .font(.footnote)
                 .fontWeight(.semibold)
+
+            HStack(spacing: 4) {
+                ForEach(entries) { entry in
+                    if entry.hasTasks() {
+                        Circle()
+                            .fill(.foreground)
+                            .frame(width: 4, height: 4, alignment: .center)
+                            .foregroundStyle(entry.isWeekly ? AnyShapeStyle(.red) : AnyShapeStyle(.primary))
+                    }
+                }
+            }
         }
         .foregroundColor(isSelected || isTodayOrBefore ? .primary : .secondary)
-        .frame(width: 40, height: 40)
+        .frame(width: 40, height: 52)
         .background {
             if isSelected {
                 // Selected date has a dark background (e.g., circle or rounded rectangle).

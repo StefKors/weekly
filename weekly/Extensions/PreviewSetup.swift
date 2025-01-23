@@ -19,12 +19,12 @@ struct PreviewSetup: ViewModifier {
     func body(content: Content) -> some View {
         if padding {
             content
-                .modelContainer(.shared)
+                .modelContainer(.previews)
                 .fontDesign(.rounded)
                 .scenePadding()
         } else {
             content
-                .modelContainer(.shared)
+                .modelContainer(.previews)
                 .fontDesign(.rounded)
         }
     }

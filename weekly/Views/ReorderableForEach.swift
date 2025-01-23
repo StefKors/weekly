@@ -69,7 +69,6 @@ public struct ReorderableForEach<Item: Reorderable, Content: View, Preview: View
 
     private func contentView(for item: Item) -> some View {
         content(item)
-            .environment(\.isReordering, active == item && hasChangedLocation)
 //            .opacity(active == item && hasChangedLocation ? 0.5 : 1)
             .onDrop(
                 of: [.text],

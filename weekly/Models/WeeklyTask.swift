@@ -24,6 +24,13 @@ final class WeeklyTask: Identifiable, CustomStringConvertible {
         self.index = index
     }
 
+    init(_ task: WeeklyTask) {
+        self.icon = task.icon
+        self.label = task.label
+        self.indent = task.indent
+        self.index = task.index
+    }
+
     var description: String {
         return "\(String(repeating: " ", count: Int(self.indent))):\(icon): \(label)"
     }

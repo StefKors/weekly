@@ -35,10 +35,17 @@ final class WeeklyEntry {
     }
 
     func copyToPasteboard() {
-        let entryAsString = tasks.map { $0.description }.joined(separator: "\n")
+        var pasteboardString = ""
+        if type == .daily {
+            pasteboardString += "**EOD Update**\n"
+            pasteboardString += tasks.map { $0.description }.joined(separator: "\n")
+        }
+        if type == .weekly {
+            pasteboardString += tasks.map { $0.description }.joined(separator: "\n")
+        }
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
-        pasteboard.setString(entryAsString, forType: .string)
+        pasteboard.setString(pasteboardString, forType: .string)
     }
 
     func refreshTaskIndexes() {
@@ -46,6 +53,26 @@ final class WeeklyEntry {
         for (index, task) in tasks.enumerated() {
             task.index = index
         }
+    }
+
+    var isDaily: Bool {
+        type == .daily
+    }
+
+    var isWeekly: Bool {
+        type == .weekly
+    }
+
+    // Returns true if:
+    // 1. There are no tasks at all, OR
+    // 2. All tasks have an empty description (e.g. "")
+    func hasNoTasks() -> Bool {
+        tasks.isEmpty ||
+        tasks.allSatisfy { $0.description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    }
+
+    func hasTasks() -> Bool {
+        !hasNoTasks()
     }
 }
 

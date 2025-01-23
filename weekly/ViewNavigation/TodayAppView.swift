@@ -20,10 +20,6 @@ struct TodayAppView: View {
     @State private var selectedDate = Date()
     @State private var selectedDate2 = Date()
 
-    //    /// Track the previous selected date so we can decide
-    //    /// which edge to use (leading or trailing).
-    //    @State private var previousSelectedDate = Date()
-
     /// The transition edge we’ll use for `.move(edge: transitionEdge)`.
     @State private var transitionEdge: Edge = .leading
 
@@ -41,13 +37,39 @@ struct TodayAppView: View {
     }
 
     private var todaysEntry: WeeklyEntry? {
-        entries.first { calendar.isDate($0.timestamp, inSameDayAs: selectedDate2) }
+        entries.first { calendar.isDate($0.timestamp, inSameDayAs: selectedDate2) && $0.isDaily }
     }
+
+    private var todaysWeeklyEntry: WeeklyEntry? {
+        entries.first { calendar.isDate($0.timestamp, inSameDayAs: selectedDate2) && $0.isWeekly }
+    }
+
+    @Namespace private var animation
 
     var body: some View {
         VStack(alignment: .center, spacing: 24) {
-            DateSwitcherView(dates: pastDates, selectedDate: $selectedDate)
-                .frame(maxWidth: 400,alignment: .center)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 0) {
+                    ForEach(pastDates, id: \.self) { date in
+                        let dateEntries = entries.filter { calendar.isDate($0.timestamp, inSameDayAs: date) }
+                        DateSwitcherDayTileView(
+                            date: date,
+                            selectedDate: $selectedDate,
+                            space: animation,
+                            entries: dateEntries
+                        )
+                    }
+                }
+
+            }
+            .defaultScrollAnchor(.trailing)
+            .padding()
+            .background {
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .fill(.background)
+                    .shadow(.cardLarge)
+            }
+            .frame(maxWidth: 400,alignment: .center)
 
 
             if let entry = todaysEntry {
@@ -62,7 +84,21 @@ struct TodayAppView: View {
                         }
                     }
             }
+
+            if let entry = todaysWeeklyEntry {
+                SingleEntryView(entry: entry)
+                    .id(entry.id)
+                // Use the dynamic transition edge, combining with opacity
+                    .transition(.opacity.combined(with: .push(from: transitionEdge)))
+                    .task(id: entry.id) {
+                        if let task = entry.tasks.last {
+                            print("set focus to task \(task.id)")
+                            focus.focusedView = .task(task.id)
+                        }
+                    }
+            }
         }
+        .frame(maxHeight: .infinity, alignment: .top)
         .scenePadding()
         // Whenever selectedDate changes, figure out if we moved forward or backward in time
         .onChange(of: selectedDate) { previousSelectedDate, newDate in
@@ -79,8 +115,21 @@ struct TodayAppView: View {
         }
         .task(id: todaysEntry) {
             if todaysEntry == nil {
+                let entryBeforeSelectedDate = entries.filter { entry in
+                    // Compare each entry's timestamp with the selected date
+                    calendar.compare(entry.timestamp, to: selectedDate, toGranularity: .day) == .orderedAscending && entry.isDaily
+                }
+                    .sorted { $0.timestamp > $1.timestamp } // Sort in descending order by timestamp
+                    .first // Get the most recent one (if it exists)
+
                 let isWednesday = calendar.component(.weekday, from: selectedDate) == 4
-                let newEntry = WeeklyEntry(timestamp: selectedDate, type: isWednesday ? .weekly : .daily)
+                let tasks: [WeeklyTask] = entryBeforeSelectedDate?.tasks.map { .init($0) } ?? []
+                let newEntry = WeeklyEntry(
+                    timestamp: selectedDate,
+                    type: isWednesday ? .weekly : .daily,
+                    tasks: tasks
+                )
+
                 modelContext.insert(newEntry)
                 try? modelContext.save()
             }

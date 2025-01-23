@@ -12,7 +12,6 @@ import Observation
 
 extension EnvironmentValues {
     @Entry var entry: WeeklyEntry = .preview
-    @Entry var isReordering: Bool = false
     @Entry var focus: AppFocus = AppFocus()
 }
 

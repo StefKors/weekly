@@ -35,17 +35,12 @@ struct WeeklyTaskView: View {
     let task: WeeklyTask
 
     @State private var isHovering: Bool = false
-    @Environment(\.isReordering) var isReordering
-
-    var isActive: Bool {
-        isReordering  //&& isHovering
-    }
 
     var body: some View {
         HStack(alignment: .top) {
             HStack() {
                 GrabberView()
-                    .opacity(isActive ? 1 : isHovering ? 0.4 : 0)
+                    .opacity(isHovering ? 0.4 : 0)
                     .contentShape(shape)
                     .onHover { hoverState in
                         isHovering = hoverState
@@ -58,11 +53,6 @@ struct WeeklyTaskView: View {
                 .zIndex(1)
         }
         .contentShape(shape)
-        .background {
-            shape.fill(.background)
-                .shadow(.cardLarge)
-                .opacity(isActive ? 1 : 0)
-        }
     }
 
 
