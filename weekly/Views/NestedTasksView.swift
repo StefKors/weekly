@@ -18,7 +18,7 @@ struct NestedTasksView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            ReorderableForEach(entry.tasks.sorted(using: KeyPathComparator(\.index)), active: $active) { item in
+            ReorderableForEach(entry.tasks.sorted { $0.index < $1.index }, active: $active) { item in
                 WeeklyTaskView(task: item)
                     .padding(.leading, item.indent * 24)
                     .onKeyPress(action: { keyPress in

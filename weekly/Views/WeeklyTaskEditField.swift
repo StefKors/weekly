@@ -84,27 +84,30 @@ struct WeeklyTaskEditField: View {
         )
         withAnimation(.snappy(duration: 0.2)) {
             // insert at index
-            if let currentIndex = entry.tasks.firstIndex(of: task) {
+            var tasks = entry.tasks.sorted { $0.index < $1.index }
+            if let currentIndex = tasks.firstIndex(of: task) {
                 newTask.index = currentIndex + 1
-                entry.tasks.insert(newTask, at: currentIndex + 1)
-                entry.refreshTaskIndexes()
+                tasks.insert(newTask, at: currentIndex + 1)
             } else {
-                entry.tasks.append(newTask)
+                tasks.append(newTask)
             }
+
+            entry.tasks = tasks
             focus.focusedView = .task(newTask.id)
         }
     }
 
     func onDelete() {
-        let taskBefore = entry.tasks.element(before: task)
+        var tasks = entry.tasks.sorted { $0.index < $1.index }
+        let taskBefore = tasks.element(before: task)
         if let taskBefore {
             focus.focusedView = .task(taskBefore.id)
         }
         withAnimation(.snappy(duration: 0.2)) {
-            entry.tasks.removeAll(where: { item in
+            tasks.removeAll(where: { item in
                 return item === task
             })
-            entry.refreshTaskIndexes()
+            entry.tasks = tasks
         }
     }
 
