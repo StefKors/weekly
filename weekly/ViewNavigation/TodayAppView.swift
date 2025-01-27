@@ -140,7 +140,7 @@ struct TodayAppView: View {
                     .first // Get the most recent one (if it exists)
 
                 let isWednesday = calendar.component(.weekday, from: selectedDate) == 4
-                let tasks: [WeeklyTask] = entryBeforeSelectedDate?.tasks.map { .init($0) } ?? []
+                let tasks: [WeeklyTask] = entryBeforeSelectedDate?.tasks.map { .init($0) }.filter { $0.iconOption != .check } ?? []
                 let newEntry = WeeklyEntry(
                     timestamp: selectedDate,
                     type: isWednesday ? .weekly : .daily,

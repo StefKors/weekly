@@ -13,6 +13,7 @@ final class WeeklyTask: Identifiable, CustomStringConvertible {
     var id: UUID = UUID()
 
     var icon: String
+    var iconOption: IconOptions { .init(rawValue: icon)! }
     var label: String
     var indent: CGFloat = 0
     var index: Int = 0
