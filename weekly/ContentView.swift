@@ -21,19 +21,24 @@ struct ContentView: View {
             switch viewMode {
             case .today:
                 TodayAppView()
+                    .fontDesign(.rounded)
             case .list:
                 ListAppView()
+                    .fontDesign(.rounded)
+            case .linear:
+                LinearStatusAppView()
+                    .fontDesign(.rounded)
             }
         }
         .navigationTitle(Text("#weekly"))
 //        .searchable(text: $searchText, prompt: "Search...")
-//        .toolbar {
+        .toolbar {
 //#if DEBUG
-//            ToolbarItem() {
-//                ToolbarViewModeToggle(viewMode: $viewMode)
-//            }
+            ToolbarItem(placement: .principal) {
+                ToolbarViewModeToggle(viewMode: $viewMode)
+            }
 //#endif
-//        }
+        }
     }
 }
 

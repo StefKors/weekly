@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A9D02642D493D7F00E8C070 /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 8A9D02632D493D7F00E8C070 /* GoogleGenerativeAI */; };
 		8AA4CC9C2D4284B000D1D223 /* PreviewGallery in Frameworks */ = {isa = PBXBuildFile; productRef = 8AA4CC9B2D4284B000D1D223 /* PreviewGallery */; };
 		8AA4CC9E2D4284B000D1D223 /* SnapshotPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = 8AA4CC9D2D4284B000D1D223 /* SnapshotPreferences */; };
 		8AA4CCA32D42852200D1D223 /* SnapshotPreviewsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 8AA4CCA22D42852200D1D223 /* SnapshotPreviewsCore */; };
@@ -129,6 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A9D02642D493D7F00E8C070 /* GoogleGenerativeAI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,6 +243,7 @@
 			);
 			name = weekly;
 			packageProductDependencies = (
+				8A9D02632D493D7F00E8C070 /* GoogleGenerativeAI */,
 			);
 			productName = weekly;
 			productReference = 8AF1DF902D3972E300381283 /* weekly.app */;
@@ -280,6 +283,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				8AA4CC9A2D4284B000D1D223 /* XCRemoteSwiftPackageReference "SnapshotPreviews" */,
+				8A9D02622D493D7F00E8C070 /* XCRemoteSwiftPackageReference "generative-ai-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8AF1DF912D3972E300381283 /* Products */;
@@ -641,6 +645,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		8A9D02622D493D7F00E8C070 /* XCRemoteSwiftPackageReference "generative-ai-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google-gemini/generative-ai-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.6;
+			};
+		};
 		8AA4CC9A2D4284B000D1D223 /* XCRemoteSwiftPackageReference "SnapshotPreviews" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/EmergeTools/SnapshotPreviews";
@@ -652,6 +664,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8A9D02632D493D7F00E8C070 /* GoogleGenerativeAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A9D02622D493D7F00E8C070 /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
+			productName = GoogleGenerativeAI;
+		};
 		8AA4CC9B2D4284B000D1D223 /* PreviewGallery */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8AA4CC9A2D4284B000D1D223 /* XCRemoteSwiftPackageReference "SnapshotPreviews" */;

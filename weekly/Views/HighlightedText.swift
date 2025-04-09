@@ -85,6 +85,8 @@ struct HighlightTextRenderer: TextRenderer {
 
                 // The rect of the current run
                 let rect = run.typographicBounds.rect
+                // with a little spacing for style
+                    .insetBy(dx: -2, dy: 0)
 
                 // Make a copy of the context so that individual slices
                 // don't affect each other.
@@ -156,7 +158,7 @@ fileprivate struct HighlightedTextComponent {
 }
 
 #Preview {
-    HighlightedText(text: "Hello World", highlightedText: "World", shapeStyle: .blue)
+    HighlightedText(text: "Hello World", highlightedText: "World", shapeStyle: .blue.opacity(0.4))
         .scenePadding()
 }
 

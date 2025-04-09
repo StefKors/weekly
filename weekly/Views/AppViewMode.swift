@@ -12,6 +12,7 @@ import SwiftData
 enum AppViewMode: String, Hashable, Identifiable, CaseIterable {
     case today
     case list
+    case linear
 
     var id: String {
         self.rawValue

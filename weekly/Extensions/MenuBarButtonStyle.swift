@@ -47,7 +47,6 @@ struct MenuBarButtonStyle_Previews: PreviewProvider {
         VStack {
             Button {
                 // action
-                print("action")
             } label: {
                 HStack {
                     Image(systemName: "square.and.arrow.up")
@@ -57,7 +56,6 @@ struct MenuBarButtonStyle_Previews: PreviewProvider {
 
             Button {
                 // action
-                print("action")
             } label: {
                 HStack {
                     Image(systemName: "square.and.arrow.up")

@@ -1,0 +1,13 @@
+
+@available(iOS 15.0, *)
+public struct RichTextEditor : SwiftUICore.View {
+  public init(text: SwiftUICore.Binding<Foundation.AttributedString>)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  @available(iOS 15.0, *)
+  public typealias Body = @_opaqueReturnTypeOf("$s7SwiftUI14RichTextEditorV4bodyQrvp", 0) __
+}
+@available(*, unavailable)
+extension SwiftUI.RichTextEditor : Swift.Sendable {
+}

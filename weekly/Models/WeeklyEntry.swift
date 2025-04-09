@@ -50,7 +50,6 @@ final class WeeklyEntry {
     }
 
     func refreshTaskIndexes() {
-        print("refresh task indexes")
         for (index, task) in tasks.enumerated() {
             task.index = index
         }
