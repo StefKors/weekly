@@ -4,4 +4,7 @@
 </p>
 
 #### Supported Platforms
-<img src="https://stefkors-2024.netlify.app/api/platform.svg?os=macos" />
+<img src="https://stefkors.com/api/platform/index.svg?os=macos" />
+
+<img src="/weekly-1.png">
+<img src="/weekly-2.png">
