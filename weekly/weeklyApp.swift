@@ -43,6 +43,17 @@ struct weeklyApp: App {
     @State private var focus: AppFocus = AppFocus()
 
     var body: some Scene {
+        MenuBarExtra {
+            EODUpdateView(minimal: true)
+        } label: {
+            Image(.menubar)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .saturation(0.0)
+                .frame(width: 32, height: 32, alignment: .center)
+        }
+        .menuBarExtraStyle(.window)
+
         WindowGroup {
             ContentView()
                 .fontDesign(.rounded)

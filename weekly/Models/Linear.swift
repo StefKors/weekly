@@ -8,6 +8,18 @@
 import Foundation
 import AppKit
 
+struct Gemini2: Equatable, Sendable, Codable {
+    let summary: String
+
+    func copyToPasteboard() {
+        var pasteboardString = ""
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString(self.summary, forType: .string)
+    }
+}
+
+
 // MARK: - Linear
 struct Gemini: Equatable, Sendable, Codable {
     let projects: [GeminiProject]
@@ -71,7 +83,8 @@ struct LinearViewer: Equatable, Sendable, Codable {
 
 // MARK: - LinearAssignedIssuesNode
 struct LinearAssignedIssuesNode: Equatable, Sendable, Codable {
-    let id, title: String?
+    let id: String
+    let title: String?
     let url: String?
     let description: String?
     let updatedAt: String?

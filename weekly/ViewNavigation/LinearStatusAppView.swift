@@ -207,10 +207,14 @@ When you organize and summarize these issues:
                     loadingStatus = "Fetching..."
                 }
                 Task {
-                    let result = try await queryGemini(forDays: Int(days))
-                    withAnimation {
-                        self.output = result
-                        self.isFetching = false
+                    do {
+                        let result = try await queryGemini(forDays: Int(days))
+                        withAnimation {
+                            self.output = result
+                            self.isFetching = false
+                        }
+                    } catch {
+                        print(error)
                     }
                 }
             } label: {
@@ -289,9 +293,10 @@ When you organize and summarize these issues:
             name: "gemini-2.0-flash-exp",
             apiKey: geminiAPIKey,
             generationConfig: config,
-            systemInstruction: geminiAPIKey
+            systemInstruction: geminiPrompt
         )
 
+        print(linearContent)
         let chat = model.startChat(history: [])
         do {
             let message = linearContent

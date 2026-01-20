@@ -13,6 +13,7 @@ enum AppViewMode: String, Hashable, Identifiable, CaseIterable {
     case today
     case list
     case linear
+    case eodUpdate
 
     var id: String {
         self.rawValue

@@ -14,7 +14,7 @@ struct ContentView: View {
 
 //    @State private var searchText: String = ""
 
-    @SceneStorage("viewMode") private var viewMode: AppViewMode = .today
+    @SceneStorage("viewMode") private var viewMode: AppViewMode = .linear
 
     var body: some View {
         ZStack {
@@ -27,6 +27,9 @@ struct ContentView: View {
                     .fontDesign(.rounded)
             case .linear:
                 LinearStatusAppView()
+                    .fontDesign(.rounded)
+            case .eodUpdate:
+                EODUpdateView()
                     .fontDesign(.rounded)
             }
         }
