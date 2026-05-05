@@ -31,6 +31,9 @@ struct ContentView: View {
             case .eodUpdate:
                 EODUpdateView()
                     .fontDesign(.rounded)
+            case .history:
+                LinearHistoryView()
+                    .fontDesign(.rounded)
             }
         }
         .navigationTitle(Text("#weekly"))
